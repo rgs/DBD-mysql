@@ -36,6 +36,7 @@ sub driver{
     DBD::mysql::db->install_method('mysql_fd');
     DBD::mysql::db->install_method('mysql_async_result');
     DBD::mysql::db->install_method('mysql_async_ready');
+    DBD::mysql::db->install_method('mysql_change_user');
     DBD::mysql::st->install_method('mysql_async_result');
     DBD::mysql::st->install_method('mysql_async_ready');
 

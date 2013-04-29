@@ -600,6 +600,31 @@ ping(dbh)
     RETVAL
 
 
+int
+mysql_change_user(dbh, user, password, dbname)
+    SV* dbh
+    SV* user
+    SV* password
+    SV* dbname
+  PROTOTYPE: $$$$
+  CODE:
+    {
+      D_imp_dbh(dbh);
+      ASYNC_CHECK_XS(dbh);
+      if (DBIc_TRACE_LEVEL(imp_dbh) >= 2)
+        PerlIO_printf(DBIc_LOGPIO(imp_dbh), "mysql_change_user\n");
+      if (mysql_change_user(imp_dbh->pmysql, SvPV_nolen(user), SvPV_nolen(password), SvPV_nolen(dbname)))
+      {
+        do_error(dbh, mysql_errno(imp_dbh->pmysql),
+                mysql_error(imp_dbh->pmysql) ,mysql_sqlstate(imp_dbh->pmysql));
+        RETVAL = 0;
+      }
+      else
+        RETVAL = 1;
+    }
+  OUTPUT:
+    RETVAL
+
 
 void
 quote(dbh, str, type=NULL)
