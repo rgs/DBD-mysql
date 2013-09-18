@@ -601,7 +601,7 @@ ping(dbh)
 
 
 int
-mysql_change_user(dbh, user, password, dbname)
+mysql_change_user(dbh, user=NULL, password=NULL, dbname=NULL)
     SV* dbh
     SV* user
     SV* password
