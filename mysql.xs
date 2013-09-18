@@ -620,7 +620,22 @@ mysql_change_user(dbh, user, password, dbname)
         RETVAL = 0;
       }
       else
+      {
+        SV *sv = DBIc_IMP_DATA(imp_dbh);
+
+        if (!sv  ||  !SvROK(sv))
+            return 0;
+
+        HV *hv = (HV*) SvRV(sv);
+        if (SvTYPE(hv) != SVt_PVHV)
+            return 0;
+
+        hv_store(hv, "user", 4, SvREFCNT_inc(user), 0);
+        hv_store(hv, "password", 8, SvREFCNT_inc(password), 0);
+        hv_store(hv, "database", 8, SvREFCNT_inc(dbname), 0);
+
         RETVAL = 1;
+      }
     }
   OUTPUT:
     RETVAL
